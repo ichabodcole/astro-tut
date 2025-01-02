@@ -1,13 +1,10 @@
 ---
 import type { Post } from "../../types/post";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
-const allPosts = Object.values(
-  import.meta.glob("../posts/*.md", { eager: true })
-) as Post[];
-const tags = [
-  ...new Set(allPosts.flatMap((post: Post) => post.frontmatter.tags)),
-];
+const allPosts = await getCollection("blog");
+const tags = [...new Set(allPosts.flatMap((post) => post.data.tags))];
 const pageTitle = "Tag Index";
 ---
 
